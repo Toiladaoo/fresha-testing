@@ -166,7 +166,7 @@ describe('booking',() => {
     cy.get('[data-qa="continue-button-mobile"]').click();
 
   })
-  it.only('booking many service',() => {
+  it('booking many service',() => {
     // find na flower store 
     cy.visit(website)
     cy.get('.xDtH6q').click();

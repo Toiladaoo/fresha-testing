@@ -10,12 +10,12 @@
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add("login", (email, password) => {
-  cy.visit("https://www.fresha.com");
+Cypress.Commands.add("login_business", (email, password) => {
+  cy.visit(Cypress.env("url"));
   /* ==== Generated with Cypress Studio ==== */
   cy.get('[data-qa="link-for-business"]').click();
   cy.get(".hero__topBtnWrapper > .button").click();
-  cy.get('[data-qa="for-businesses"] > .CLn2yq').click();
+  cy.get('[data-qa="for-businesses"] > .CLnQGg').click();
   /* ==== End Cypress Studio ==== */
   cy.wait(500);
   /* --- enter email account */
@@ -35,7 +35,7 @@ Cypress.on("uncaught:exception", (err) => {
   }
 });
 
-Cypress.Commands.add("login", (email, password) => {
+Cypress.Commands.add("login_everyone", (email, password) => {
   cy.visit(Cypress.env("url"));
 
   /* ==== Generated with Cypress Studio ==== */
@@ -45,7 +45,7 @@ Cypress.Commands.add("login", (email, password) => {
   /* ==== Generated with Cypress Studio ==== */
   cy.get(".hero__topBtnWrapper > .button").click();
   cy.get('[data-qa="for-everyone"] > .CLn2yq').click();
-  cy.get("#input-react-aria-3").type("daobuisiteupz@gmail.com");
+  cy.get("#input-react-aria-3").type(email);
   cy.get('[data-qa="react-aria-4"]').click();
   /* enter password */
   cy.get("#input-react-aria-8").type("1convitcon");
@@ -53,9 +53,7 @@ Cypress.Commands.add("login", (email, password) => {
   /* check exist */
   cy.get('[data-qa="avatar-button-desktop"]').click();
   cy.get('[data-qa="action-dropdown-btn-info-profile"]').click();
-  cy.get('[data-qa="user-email"]')
-    .should("exist")
-    .contains("daobuisiteupz@gmail.com");
+  cy.get('[data-qa="user-email"]').should("exist").contains(password);
 });
 //
 //

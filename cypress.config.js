@@ -6,6 +6,7 @@ export default defineConfig({
   projectId: "i3t8gb",
   env: {
     url: "https://www.fresha.com",
+    login_json_file: "cypress/fixtures/login-data.json",
   },
   e2e: {
     experimentalStudio: true,
