@@ -50,9 +50,10 @@ describe('Important processes', () => {
     cy.wait(500)
     cy.get('._06c6e7041').find('button').contains('New appointment').click();
   })
-  it('Add new sale', () => {c   
+  it.only('Add new sale', () => {
+  
   })
-  it.only('the complete the payment process', () => {
+  it('the complete the payment process', () => {
     cy.get('[data-qa="cookie-accept-btn"]').click();
     cy.wait(2000);
     cy.get('[data-qa="right-arrow-sign"]').click();
