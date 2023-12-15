@@ -1,16 +1,17 @@
 describe('login business', () => {
-  it('login successful ', () => {
+  it.only('login successful ', () => {
     cy.visit('https://www.fresha.com')
     /* ==== Generated with Cypress Studio ==== */
     cy.get('[data-qa="link-for-business"]').click();
     cy.get('.hero__topBtnWrapper > .button').click();
-    cy.get('[data-qa="for-businesses"] > .CLn2yq').click();
+    cy.wait(4000)
+    cy.get('[data-qa="for-businesses"]').click();
      /* ==== End Cypress Studio ==== */
-    cy.wait(500);
+    cy.wait(1000);
     /* --- enter email account */
     cy.get('.c96c73cca').type('bthd1805@gmail.com');
     cy.get('[data-qa="continue"]').click();
-    cy.wait(500);
+    cy.wait(1000);
     // enter password
     cy.get('.c96c73cca').type('1convitcon');
     cy.get('[data-qa="login"]').click();
