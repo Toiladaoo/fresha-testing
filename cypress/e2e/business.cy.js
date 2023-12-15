@@ -1,57 +1,23 @@
+
 describe('Important processes', () => {
   beforeEach(() => {
-    // cy.visit('https://www.fresha.com')
-    // /* ==== Generated with Cypress Studio ==== */
-    // cy.get('[data-qa="link-for-business"]').click();
-    // cy.get('.hero__topBtnWrapper > .button').click();
-    // cy.wait(4000)
-    // cy.get('[data-qa="for-businesses"]').click();
-    //  /* ==== End Cypress Studio ==== */
-    // cy.wait(1000);
-    // /* --- enter email account */
-    // cy.get('.c96c73cca').type('bthd1805@gmail.com');
-    // cy.get('[data-qa="continue"]').click();
-    // cy.wait(1000);
-    // // enter password
-    // cy.get('.c96c73cca').type('1convitcon');
-    // cy.get('[data-qa="login"]').click();
-    cy.loginBussiness();
+    cy.readFile(Cypress.env("login_json_file")).then((data) => {
+      cy.login_business(data.email, data.password);
+    });
   })
   Cypress.on('uncaught:exception', (err, runnable) => {
     return false;
   });
-  it('Add new staff_sucessfull ', () => {
-    cy.get('[data-qa="cookie-accept-btn"]').click();
-    cy.wait(2000);
-    cy.get('[data-qa="nav-d-business-settings"]').click();
-    cy.get('[data-qa="modal-title"]').should('have.text','Business settings');
-    cy.get('[href="/setup/team"]').click();
-    cy.wait(4000)
-    cy.get('[data-qa="modal-header-in-content"] > [data-qa="modal-title"]').should('includes.text','Team');
-    cy.get('[href="/staff/employees"]').click();
-    cy.wait(4000)
-    cy.get('[data-qa="modal-title"] > .fWGp_B').should('includes.text','Team members');
-    cy.get('[data-qa="fab-add-staff"]').click();
-    cy.wait(3000)
-    cy.get('[data-qa="modal-title"]').should('includes.text','Add team member');
-    cy.get('[data-qa="input-input-structure-profile-section-first-name"]').type('nguyen');
-    cy.get('[data-qa="profile-section-email"] > ._06c627cca > .c96c73cca').type('nguyen111@gmail.com');
-    cy.get('[data-qa="color-sample-pink"] > .af2bf461c').click();
-    cy.wait(1000)
-    cy.get('[data-qa="save-button"]').click();
-    cy.wait(3000);
-    //check
-    cy.get('[data-qa="staff-list-item"] >').find('p').should('includes.text','nguyen');
 
-  })
-  it('Add new appointment', () => {
+ 
+  it.only('Add new appointment', () => {
     cy.get('[data-qa="cookie-accept-btn"]').click();
     cy.wait(2000);
     cy.get('._06c6e7041').find('button').eq(1).click();
     cy.wait(500)
     cy.get('._06c6e7041').find('button').contains('New appointment').click();
   })
-  it.only('Add new sale', () => {
+  it('Add new sale', () => {
   
   })
   it('the complete the payment process', () => {
