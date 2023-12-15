@@ -36,7 +36,7 @@ Cypress.on("uncaught:exception", (err) => {
 });
 
 Cypress.Commands.add("login", (email, password) => {
-  cy.visit("https://www.fresha.com");
+  cy.visit(Cypress.env("url"));
 
   /* ==== Generated with Cypress Studio ==== */
   cy.get('[data-qa="link-for-business"]').click();
