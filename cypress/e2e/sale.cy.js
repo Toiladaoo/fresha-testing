@@ -1,21 +1,25 @@
 import * as path from "path";
+import * as XLSX from "xlsx";
+import fs from "fs";
 
 describe("new sales", () => {
-  const xlsxPath = "cypress/downloads/tip_option.xlsx";
-  const jsonName = path.basename(xlsxPath).replace(".xlsx", ".json");
+  const tip_option_path = "cypress/fixtures/tip_option.xlsx";
+  const sale_cases_path = "cypress/fixtures/sale_cases.xlsx";
+  // const jsonName = path.basename(xlsxPath).replace(".xlsx", ".json");
 
   before(() => {
-    cy.task("convertXLSXToJson", xlsxPath).then((res) => {
-      cy.log(res);
-    });
+    // cy.task("convertXLSXToJson", xlsxPath).then((res) => {
+    //   cy.log(res);
+    // });
+    // Example using xlsx library
   });
 
   beforeEach(() => {
     // run these tests as if in a desktop
     // browser with a 720p monitor
     cy.viewport(1440, 900);
-    cy.fixture(jsonName).as("tipOptionsData");
-    cy.fixture("sale_case").as("saleCaseData");
+    // cy.fixture(jsonName).as("tipOptionsData");
+    // cy.fixture("sale_case").as("saleCaseData");
   });
 
   it("choose 1 product", () => {
@@ -139,9 +143,17 @@ describe("new sales", () => {
     cy.wait(1000);
     cy.get('[data-qa="cart-continue-button"]').click();
 
-    cy.get("@tipOptionsData").then((tips) => {
-      for (let i = 0; i < tips.length; i++) {
-        const tip = tips[i].tip;
+    cy.readFile(tip_option_path, {
+      encoding: "binary",
+    }).then((excelData) => {
+      const workbook = XLSX.read(excelData, { type: "binary" });
+      const sheetName = workbook.SheetNames[0];
+      const excelDataArray = XLSX.utils.sheet_to_json(
+        workbook.Sheets[sheetName]
+      );
+
+      excelDataArray.forEach((row) => {
+        const tip = row.tip;
         //tip
         let tip_money = 0;
         if (tip == "0") {
@@ -180,7 +192,7 @@ describe("new sales", () => {
             let final_total = parseInt(money_str, 10);
             expect(final_total).to.equal(total + tip_money);
           });
-      }
+      });
     });
   });
 
@@ -305,25 +317,38 @@ describe("new sales", () => {
       cy.login_business(data.email, data.password);
     });
 
-    cy.get("@saleCaseData").then((datas) => {
-      cy.log(datas.length);
-      for (let i = 0; i < datas.length; i++) {
-        let number_product = datas[i].number_product;
-        let tip_option = datas[i].tip_option;
-        let pay_option = datas[i].pay_option;
-        let is_pay = datas[i].is_pay;
+    cy.readFile(sale_cases_path, {
+      encoding: "binary",
+    }).then((excelData) => {
+      const workbook = XLSX.read(excelData, { type: "binary" });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const excelDataArray = XLSX.utils.sheet_to_json(
+        workbook.Sheets[sheetName]
+      );
 
+      const resultColumnIndex = excelDataArray[0].length + 1;
+
+      let result = [];
+
+      excelDataArray.forEach((row, index) => {
+        let number_product = row.number_product;
+        let tip_option = row.tip_option;
+        let pay_option = row.pay_option;
+        let is_pay = row.is_pay;
         cy.sale_buy_n_product_tip(number_product, tip_option);
-        cy.sale_collect_cast(pay_option, is_pay);
-      }
+        cy.sale_collect_cast(pay_option, is_pay).then((res) => {
+          row.result = res ? "passed" : "failed";
+          worksheet[
+            XLSX.utils.encode_cell({ r: index + 1, c: resultColumnIndex })
+          ] = { v: res };
+        });
+
+        result = [...result, row];
+      });
+      cy.writeFile("cypress/fixtures/Test.xlsx", result, "binary");
+
+      // cy.jsonToExcel(result, "cypress/fixtures/Test.xlsx");
     });
-
-    //   //change
-    //   cy.get('[data-qa="cart-continue-button"]').click();
-
-    //   //check Completed status
-    //   cy.get('[data-qa="invoice-status-badge"]')
-    //     .invoke("text")
-    //     .should("include", "Completed");
   });
 });
