@@ -22,9 +22,9 @@ export default defineConfig({
             range: 1,
           });
 
-          const fileName = path.basename(filePath, ".xlsx");
-          const jsonFilePath = `./cypress/fixtures/${fileName}.json`;
-          fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2));
+          // const fileName = path.basename(filePath, ".xlsx");
+          // const jsonFilePath = `./cypress/fixtures/${fileName}.json`;
+          // fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2));
           return workbook.SheetNames;
         },
       });

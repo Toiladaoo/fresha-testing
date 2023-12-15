@@ -1,0 +1,14 @@
+[
+    {
+        "tip_option": "0",
+        "number_product": 2,
+        "pay_option": "0",
+        "is_pay": false
+    },
+    {
+        "tip_option": "35",
+        "number_product": 4,
+        "pay_option": "3",
+        "is_pay": true
+    }
+]
