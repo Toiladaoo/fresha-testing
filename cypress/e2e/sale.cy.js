@@ -214,7 +214,7 @@ describe("new sales", () => {
     });
   });
   //ok ne
-  it.only("status_result", () => {
+  it("status_result", () => {
     cy.readFile(Cypress.env("login_json_file")).then((data) => {
       cy.login_business(data.email, data.password);
     });
@@ -487,6 +487,28 @@ describe("new sales", () => {
       XLSX.writeFile(workbook1, "sale_cases_result.xlsx", {
         compression: true,
       });
+    });
+  });
+
+  //gui navigation nav hover color
+  it.only("customize test", () => {
+    cy.readFile(Cypress.env("login_json_file")).then((data) => {
+      cy.login_business(data.email, data.password);
+    });
+
+    let button = cy.get('[data-qa="nav-d-business-settings"]');
+    button.should("not.be.empty");
+    button.should("have.css", "background-color").then((initialColor) => {
+      // Trigger hover state
+      button.trigger("mouseover");
+      // Get the background color after hover
+      cy.get('[data-qa="nav-d-business-settings"]')
+        .trigger("mouseover")
+        .should("have.css", "background-color")
+        .then((hoveredColor) => {
+          // Assert that the colors are different
+          expect(initialColor).not.to.equal(hoveredColor);
+        });
     });
   });
 });

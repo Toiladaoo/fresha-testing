@@ -204,33 +204,15 @@ describe("add salon to favorite", () => {
 // find store, login -> chuyen qua commands.js de dung lai nhieu lan
 describe("booking", () => {
   beforeEach(() => {
-    cy.visit("https://www.fresha.com");
-
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get('[data-qa="link-for-business"]').click();
-    /* ==== End Cypress Studio ==== */
-
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get(".hero__topBtnWrapper > .button").click();
-    cy.wait(500);
-    cy.get('[data-qa="for-everyone"] > .CLnQGg').click();
-    cy.get("#input-react-aria-3").type("daobuisiteupz@gmail.com");
-    cy.get('[data-qa="react-aria-4"]').click();
-    /* enter password */
-    cy.get("#input-react-aria-8").type("1convitcon");
-    cy.get('[data-qa="react-aria-9"]').click();
-    /* check exist */
-    cy.get('[data-qa="avatar-button-desktop"]').click();
-    cy.get('[data-qa="action-dropdown-btn-info-profile"]').click();
-    cy.get('[data-qa="user-email"]')
-      .should("exist")
-      .contains("daobuisiteupz@gmail.com");
+    cy.readFile(Cypress.env("login_json_file")).then((data) => {
+      cy.login_business(data.email, data.password);
+    });
   });
 
   Cypress.on("uncaught:exception", (err, runnable) => {
     return false;
   });
-  it("booking one service", () => {
+  it.only("booking one service", () => {
     // find na flower store
     cy.visit(website);
     cy.get(".xDtH6q").click();
