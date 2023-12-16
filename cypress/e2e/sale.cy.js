@@ -117,8 +117,8 @@ describe("new sales", () => {
       .get('[data-qa="pos-cart-item-amount"]')
       .should("include.text", "2");
   });
-
-  it.only("choose n product and choose tips", () => {
+  //ok ne
+  it("choose n product and choose tips", () => {
     cy.readFile(Cypress.env("login_json_file")).then((data) => {
       cy.login_business(data.email, data.password);
     });
@@ -214,7 +214,7 @@ describe("new sales", () => {
     });
   });
   //ok ne
-  it("choose n product and unpaid", () => {
+  it.only("status_result", () => {
     cy.readFile(Cypress.env("login_json_file")).then((data) => {
       cy.login_business(data.email, data.password);
     });
@@ -244,24 +244,22 @@ describe("new sales", () => {
 
         let check = null;
         //check unpaid status
-        cy.get('[data-qa="invoice-status-badge"]')
+        check = cy
+          .get('[data-qa="invoice-status-badge"]')
           .invoke("text")
           .then((txt) => {
             check = txt.includes(is_pay ? "Completed" : "Unpaid");
+            return txt.includes(is_pay ? "Completed" : "Unpaid");
           });
         // .should("include", "Unpaid");
 
-        row.result = check ? "failed" : "passed";
+        row.result = check ? "passed" : "failed";
         result = [...result, row];
       });
 
       const worksheet1 = XLSX.utils.json_to_sheet(result);
       const workbook1 = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook1, worksheet1, "Employees");
-
-      console.log(worksheet1);
-      console.log(workbook1);
-
       XLSX.writeFile(workbook1, "_check_status_result.xlsx", {
         compression: true,
       });
