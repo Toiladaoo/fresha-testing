@@ -7,7 +7,7 @@ describe("search services", () => {
   const user_location_path = "cypress/fixtures/user_location.xlsx";
 
   //oke ne
-  it("Search by store name ", () => {
+  it.only("Search by store name ", () => {
     cy.readFile(store_name_path, {
       encoding: "binary",
     }).then((excelData) => {
@@ -72,7 +72,7 @@ describe("search services", () => {
     cy.get(".octcYA").contains("Hair & styling");
   });
   //oke ne
-  it.only("use current location", () => {
+  it("use current location", () => {
     cy.readFile(user_location_path, {
       encoding: "binary",
     }).then((excelData) => {

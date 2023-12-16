@@ -1,5 +1,9 @@
+import * as XLSX from "xlsx";
 
 describe('Quản lý nhân viên', () => {
+  before(() =>{
+    cy.viewport(1440, 900);
+  })
   beforeEach(() => {
     cy.readFile(Cypress.env("login_json_file")).then((data) => {
       cy.login_business(data.email, data.password);
@@ -101,28 +105,40 @@ describe('Quản lý nhân viên', () => {
 
   })
 
-  it('check trung email su dung', () => {
-    // lam sao lay duoc danh sach email moi 
-    // warning "Email address already used"
+  it.only('check trung email su dung', () => {
     cy.VisitTeamMemberPage();
-    // cy.getEmployeeEmailList().then((emloyeeList) => {
-    //   emloyeeList.forEach((employee) => {
-    //     const existingEmail = employee.email;
-    //     cy.get('[data-qa="fab-add-staff"]').click();
-    //     cy.wait(3000)
-    //     cy.get('.ed700fce0 > [data-qa="modal-header-in-content"] > [data-qa="modal-title"]').should('includes.text','Add team member');
-    //     cy.get('[data-qa="profile-section-email"] > ._06c627cca > .c96c73cca').type(existingEmail);
-    //     cy.get('[data-qa="color-sample-pink"] > .af2bf461c').click();
 
-    //   })
-    //   if(emloyeeList.lenght > 0 ) {
+    let result = [];
 
-    //   }
-    // })
+    let count = cy.get('[data-qa^="staff-overview-list-table-row-cell-"] > .fWGqQa > [data-qa="staff-email"] > ._982d25326 > ._-wKgxq')
+      .its('length');
+
+      let res = cy.get('div.aaf23c8e5 > .fWGqQa > .rfrYcq').invoke('text')
+      .then((text) => {
+        let val = parseInt(text);
+        return val === count;
+      });
+
+      result = [...result, {
+        actual: res ? "passed" : "failed"
+      }];
+
+      const worksheet1 = XLSX.utils.json_to_sheet(result);
+      const workbook1 = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook1, worksheet1, "Employees");
+
+      console.log(worksheet1);
+      console.log(workbook1);
+
+      XLSX.writeFile(workbook1, "staff_length_result.xlsx", {
+        compression: true,
+      });
 
   })
-  it.only('dieu chinh dich vu cho nhan vien', () => {
+  it('dieu chinh dich vu cho nhan vien', () => {
     cy.VisitTeamMemberPage();
+    cy.get('[data-qa="staff-list-item"]').eq(0).click();
+    cy.get('[data-qa="services"]').click();
     
   })
   it('dieu chinh location cho nhan vien', () => {

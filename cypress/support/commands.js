@@ -81,13 +81,10 @@ Cypress.Commands.add("VisitTeamMemberPage", () => {
   // cy.get('[data-qa="cookie-accept-btn"]').click();
   cy.wait(2000);
   cy.get('[data-qa="nav-d-business-settings"]').click();
-  cy.get('[data-qa="modal-title"]').should('have.text','Business settings');
-  cy.get('[href="/setup/team"]').click();
+  cy.get('div.aaf23c8e5 > ._-wKgxq').should('have.text','Business settings');
+  cy.get('[href="/staff/employees"] > .fwrHUa').click();
   cy.wait(3000)
-  cy.get('[data-qa="modal-header-in-content"] > [data-qa="modal-title"]').should('includes.text','Team');
-  cy.get('[href="/staff/employees"]').click();
-  cy.wait(3000)
-  cy.get('[data-qa="modal-title"] > .fWGqQa').should('includes.text','Team members');
+  cy.get('.fWGqQa > .font-default-header-l-semibold').should('includes.text','Team members');
 });
 
 
