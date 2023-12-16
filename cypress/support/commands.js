@@ -106,7 +106,7 @@ Cypress.Commands.add("sale_buy_n_product_tip", (num, tip_option) => {
       });
   }
 
-  cy.wait(4000);
+  cy.wait(2000);
   //continue
   cy.get('[data-qa="cart-continue-button"]').click();
 });
@@ -129,13 +129,6 @@ Cypress.Commands.add("sale_collect_cast", (pay_option, pay) => {
 
     // select pay cash option 1
     cy.get(`[data-qa="predefined-change-${pay_option}"]`).click();
-
-    let selected = "";
-    cy.get(`[data-qa="predefined-change-${pay_option}"]`)
-      .invoke("text")
-      .then((txt) => {
-        selected = txt;
-      });
 
     // collect
     cy.get('[data-qa="collect-cash"]').click();
