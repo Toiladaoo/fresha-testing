@@ -54,7 +54,7 @@ describe('Quản lý nhân viên', () => {
    
   });
  
-  it.only('them nhan vien vao luu tru', () =>{
+  it('them nhan vien vao luu tru', () =>{
     cy.VisitTeamMemberPage();
     let dataBeforArchived;
     cy.get('[data-qa="staff-list-item"]').eq(0).find('p').eq(0).invoke('text').then((text) => {
@@ -100,9 +100,32 @@ describe('Quản lý nhân viên', () => {
     
 
   })
+
   it('check trung email su dung', () => {
     // lam sao lay duoc danh sach email moi 
     // warning "Email address already used"
+    cy.VisitTeamMemberPage();
+    // cy.getEmployeeEmailList().then((emloyeeList) => {
+    //   emloyeeList.forEach((employee) => {
+    //     const existingEmail = employee.email;
+    //     cy.get('[data-qa="fab-add-staff"]').click();
+    //     cy.wait(3000)
+    //     cy.get('.ed700fce0 > [data-qa="modal-header-in-content"] > [data-qa="modal-title"]').should('includes.text','Add team member');
+    //     cy.get('[data-qa="profile-section-email"] > ._06c627cca > .c96c73cca').type(existingEmail);
+    //     cy.get('[data-qa="color-sample-pink"] > .af2bf461c').click();
 
+    //   })
+    //   if(emloyeeList.lenght > 0 ) {
+
+    //   }
+    // })
+
+  })
+  it.only('dieu chinh dich vu cho nhan vien', () => {
+    cy.VisitTeamMemberPage();
+    
+  })
+  it('dieu chinh location cho nhan vien', () => {
+    
   })
 })
