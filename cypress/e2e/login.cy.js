@@ -12,23 +12,45 @@ describe("Gmail Registration", () => {
 
         excelDataArray.forEach((row) => {
           // Check if email field is not empty
-          if (row.email) {
-            // Start Cypress test commands
-            cy.visit("https://partners.fresha.com/users/sign-in");
+          cy.visit("https://partners.fresha.com/users/sign-in");
+         
+          cy.get('[data-qa="continue"]').click();
 
-            if(row.email == "") {
-              cy.get('[data-qa="email-input-status-message"]').should(
-                "exist"
-              );
+          if(row.status == "empty email") {
+            cy.get('[data-qa="email-status-message"]').should('exist');
+
+          } else {
+
+            if(row.password == "") {
+              cy.get('[data-qa="password-helper-text"]').should('exist');
             }
-            cy.get(".c96c73cca").type(row.email);
-            cy.get('[data-qa="continue"]').click();
 
-            if(row.email != "") {
+            if(row.status == "invalid email") {
+              cy.wait(3000);
+              cy.get(".c96c73cca").type(row.email);
+              cy.wait(3000);
+              cy.get('[data-qa="continue"]').click();
+              cy.wait(3000);
+              cy.get('[data-qa="headline-title"]').should('exist');
+  
+            } else if(row.status == "invalid password") {
+              cy.wait(3000);
+              cy.get(".c96c73cca").type(row.email);
+               cy.wait(3000);
+              cy.get('[data-qa="continue"]').click();
+            } else {
+              cy.wait(3000);
+              cy.get(".c96c73cca").type(row.email);
+              cy.get('[data-qa="continue"]').click();
+              cy.wait(3000)
               cy.get('.c96c73cca').type(row.password);
+              cy.wait(3000)
+              cy.get('[data-qa="login"]').click();
+              cy.wait(3000)
+              cy.get('.WTZV0a > :nth-child(1) > ._06c66a0bc > .ed709e0bc > .c671260bc').should('exist');
+  
             }
-
-            // Check if the account already exists
+          }             // Check if the account already exists
             // cy.get('[data-qa="headline-title"]').then(($headlineTitle) => {
             //   if ($headlineTitle.text().includes("Login")) {
             //     // Account already exists, login
@@ -82,7 +104,6 @@ describe("Gmail Registration", () => {
             //     }
             //   }
             // });
-          }
         });
       }
     );
